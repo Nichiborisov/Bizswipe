@@ -11,7 +11,6 @@ const profileRoutes = require('./routes/profile');
 const swipeRoutes = require('./routes/swipe');
 const chatRoutes = require('./routes/chat');
 const blockRoutes = require('./routes/block');
-const indexRoutes = require('./routes/index'); // Add this line
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -27,7 +26,10 @@ app.use('/profile', profileRoutes);
 app.use('/swipe', swipeRoutes);
 app.use('/chat', chatRoutes);
 app.use('/block', blockRoutes);
-app.use('/', indexRoutes); // Add this line
+
+app.get('/', (req, res) => {
+    res.render('index');
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

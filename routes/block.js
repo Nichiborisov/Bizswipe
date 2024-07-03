@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../database/connection');
+const db = require('../database/connection');
 
-router.post('/', (req, res) => {
-    const { blockedUserId } = req.body;
+router.post('/block', (req, res) => {
+    const { userIdToBlock } = req.body;
+    const userId = req.session.user.id;
 
-    connection.query('INSERT INTO blocked_users (user_id, blocked_user_id) VALUES (?, ?)', 
-    [req.session.userId, blockedUserId], (error, results) => {
-        if (error) throw error;
-        res.redirect('/profile');
+    const query = `INSERT INTO blocked_users (user_id, blocked_user_id) VALUES (?, ?)`;
+    db.run(query, [userId, userIdToBlock], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send('Error blocking user');
+        } else {
+            res.send('User blocked successfully');
+        }
     });
 });
 

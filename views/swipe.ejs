@@ -9,24 +9,27 @@
 <body>
     <header>
         <div class="logo">BizMatch</div>
-        <% include navigation %>
+        <nav>
+            <ul>
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/swipe">Свайп</a></li>
+                <li><a href="/chat">Чат</a></li>
+                <li><a href="/auth/logout">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <h1>Свайп</h1>
         <div id="swipe-container">
-            <% if(users && users.length > 0) { %>
-                <% users.forEach(user => { %>
-                    <div class="swipe-item">
-                        <img src="<%= user.profile_picture %>" alt="Profile Picture">
-                        <h2><%= user.username %></h2>
-                        <p><%= user.bio %></p>
-                        <button class="swipe-action" data-id="<%= user.id %>" data-action="like">Нравится</button>
-                        <button class="swipe-action" data-id="<%= user.id %>" data-action="dislike">Не нравится</button>
-                    </div>
-                <% }) %>
-            <% } else { %>
-                <p>No users available for swiping at the moment.</p>
-            <% } %>
+            <% users.forEach(user => { %>
+                <div class="swipe-item">
+                    <img src="<%= user.profile_picture %>" alt="Profile Picture">
+                    <h2><%= user.username %></h2>
+                    <p><%= user.bio %></p>
+                    <button class="swipe-action" data-id="<%= user.id %>" data-action="like">Нравится</button>
+                    <button class="swipe-action" data-id="<%= user.id %>" data-action="dislike">Не нравится</button>
+                </div>
+            <% }) %>
         </div>
     </main>
     <script src="/scripts.js"></script>

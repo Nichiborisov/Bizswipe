@@ -9,27 +9,46 @@
 <body>
     <header>
         <div class="logo">BizMatch</div>
-        <% include navigation %>
+        <nav>
+            <ul>
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/swipe">Свайп</a></li>
+                <li><a href="/chat">Чат</a></li>
+                <li><a href="/auth/logout">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <h1>Профиль</h1>
         <div class="profile-info">
-            <img src="<%= user.profile_picture %>" alt="Profile Picture">
-            <h2><%= user.username %></h2>
-            <p><%= user.bio %></p>
+            <img src="<%= user.profile_picture %>" alt="Profile Picture" style="float: left; margin-right: 20px;">
+            <div style="float: left;">
+                <h2><%= user.username %></h2>
+                <p><%= user.bio %></p>
+                <form action="/profile" method="POST">
+                    <label for="username">Имя пользователя:</label>
+                    <input type="text" id="username" name="username" value="<%= user.username %>" required>
+                    
+                    <label for="bio">Биография:</label>
+                    <textarea id="bio" name="bio"><%= user.bio %></textarea>
+                    
+                    <label for="keywords">Ключевые слова:</label>
+                    <input type="text" id="keywords" name="keywords" value="<%= user.keywords %>" required>
+                    
+                    <button type="submit">Обновить профиль</button>
+                </form>
+            </div>
         </div>
-        <form action="/profile" method="POST">
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" name="username" value="<%= user.username %>" required>
-            
-            <label for="bio">Биография:</label>
-            <textarea id="bio" name="bio"><%= user.bio %></textarea>
-            
-            <label for="keywords">Ключевые слова:</label>
-            <input type="text" id="keywords" name="keywords" value="<%= user.keywords %>" required>
-            
-            <button type="submit">Обновить профиль</button>
-        </form>
+        <div style="clear: both;"></div>
+        <div class="blog-posts">
+            <h2>Мои посты</h2>
+            <% posts.forEach(post => { %>
+                <div class="post">
+                    <h3><%= post.title %></h3>
+                    <p><%= post.content %></p>
+                </div>
+            <% }) %>
+        </div>
     </main>
 </body>
 </html>

@@ -1,39 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database/connection'); // Assuming the connection file is correct
+const db = require('../database/connection');
 
 router.get('/', (req, res) => {
-    const userId = req.session.userId;
-    
-    db.query('SELECT * FROM users WHERE id != ?', [userId], (err, results) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+    const query = `SELECT * FROM users WHERE id != ? AND id NOT IN (SELECT blocked_user_id FROM blocked_users WHERE user_id = ?)`;
+    db.all(query, [req.session.user.id, req.session.user.id], (err, rows) => {
         if (err) {
-            return res.status(500).send('Error fetching profiles');
+            console.error(err.message);
+            res.send('Error fetching profiles');
+        } else {
+            res.render('swipe', { users: rows });
         }
-        res.render('swipe', { users: results });
     });
 });
 
-router.post('/like', (req, res) => {
-    const { userId } = req.body;
-    const currentUserId = req.session.userId;
-    
-    db.query('INSERT INTO likes (user_id, liked_user_id) VALUES (?, ?)', [currentUserId, userId], (err, result) => {
+router.post('/action', (req, res) => {
+    const { userId, action } = req.body;
+    const query = `INSERT INTO actions (user_id, target_user_id, action) VALUES (?, ?, ?)`;
+    db.run(query, [req.session.user.id, userId, action], (err) => {
         if (err) {
-            return res.json({ success: false, message: 'Error liking user' });
+            console.error(err.message);
+            res.send('Error performing action');
+        } else {
+            res.send('Action performed');
         }
-        res.json({ success: true });
-    });
-});
-
-router.post('/dislike', (req, res) => {
-    const { userId } = req.body;
-    const currentUserId = req.session.userId;
-    
-    db.query('INSERT INTO dislikes (user_id, disliked_user_id) VALUES (?, ?)', [currentUserId, userId], (err, result) => {
-        if (err) {
-            return res.json({ success: false, message: 'Error disliking user' });
-        }
-        res.json({ success: true });
     });
 });
 
