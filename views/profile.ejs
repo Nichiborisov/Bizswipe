@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">BizMatch</div>
+        <% include navigation %>
+    </header>
+    <main>
+        <h1>Профиль</h1>
+        <div class="profile-info">
+            <img src="<%= user.profile_picture %>" alt="Profile Picture">
+            <h2><%= user.username %></h2>
+            <p><%= user.bio %></p>
+        </div>
+        <form action="/profile" method="POST">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" value="<%= user.username %>" required>
+            
+            <label for="bio">Биография:</label>
+            <textarea id="bio" name="bio"><%= user.bio %></textarea>
+            
+            <label for="keywords">Ключевые слова:</label>
+            <input type="text" id="keywords" name="keywords" value="<%= user.keywords %>" required>
+            
+            <button type="submit">Обновить профиль</button>
+        </form>
+    </main>
+</body>
+</html>

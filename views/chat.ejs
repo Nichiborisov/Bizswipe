@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">BizMatch</div>
+        <nav>
+            <ul>
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/swipe">Свайп</a></li>
+                <li><a href="/chat">Чат</a></li>
+                <li><a href="/auth/logout">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Чат</h1>
+        <div id="chat-container">
+            <% chats.forEach(chat => { %>
+                <div class="chat-item">
+                    <h2><%= chat.username %></h2>
+                    <p><%= chat.message %></p>
+                    <form id="chat-form">
+                        <input type="hidden" id="receiver_id" value="<%= chat.id %>">
+                        <input type="text" id="message" placeholder="Введите сообщение" required>
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+    <script src="/scripts.js"></script>
+</body>
+</html>

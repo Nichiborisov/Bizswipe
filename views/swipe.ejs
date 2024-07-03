@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Свайп</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">BizMatch</div>
+        <% include navigation %>
+    </header>
+    <main>
+        <h1>Свайп</h1>
+        <div id="swipe-container">
+            <% if(users && users.length > 0) { %>
+                <% users.forEach(user => { %>
+                    <div class="swipe-item">
+                        <img src="<%= user.profile_picture %>" alt="Profile Picture">
+                        <h2><%= user.username %></h2>
+                        <p><%= user.bio %></p>
+                        <button class="swipe-action" data-id="<%= user.id %>" data-action="like">Нравится</button>
+                        <button class="swipe-action" data-id="<%= user.id %>" data-action="dislike">Не нравится</button>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No users available for swiping at the moment.</p>
+            <% } %>
+        </div>
+    </main>
+    <script src="/scripts.js"></script>
+</body>
+</html>
